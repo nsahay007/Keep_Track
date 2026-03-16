@@ -14,7 +14,7 @@ A modern web-based expense tracker with smart analytics, voice assistant, OCR re
 ## How to Run
 
 ```bash
-cd "/Users/nishant/Downloads/ExpenseTracker-Revamp"
+cd "Folder Location"
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
