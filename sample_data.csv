@@ -1,0 +1,28 @@
+date,category,amount,description,payment_method,entry_method
+2026-01-03,Food & Dining,12.50,Street food lunch,Cash,manual
+2026-01-05,Transportation,7.00,Metro pass,Digital Wallet,manual
+2026-01-08,Shopping,45.99,Clothing,Debit Card,manual
+2026-01-10,Bills & Utilities,60.00,Electricity bill,Bank Transfer,manual
+2026-01-12,Entertainment,18.00,Movie night,Credit Card,manual
+2026-01-15,Healthcare,22.75,Pharmacy,Debit Card,manual
+2026-01-18,Education,30.00,Online course,Digital Wallet,manual
+2026-01-21,Travel,120.00,Weekend trip,Credit Card,manual
+2026-01-26,Other,9.50,Coffee with friends,Cash,manual
+2026-02-02,Food & Dining,15.20,Groceries,Debit Card,manual
+2026-02-04,Transportation,5.80,Taxi,Cash,manual
+2026-02-08,Shopping,65.00,Electronics accessory,Credit Card,manual
+2026-02-11,Bills & Utilities,52.00,Internet bill,Bank Transfer,manual
+2026-02-13,Entertainment,24.00,Concert ticket,Credit Card,manual
+2026-02-16,Healthcare,35.00,Clinic visit,Debit Card,manual
+2026-02-19,Education,40.00,Books,Cash,manual
+2026-02-22,Travel,200.00,Train tickets,Credit Card,manual
+2026-02-26,Other,11.00,Snacks,Digital Wallet,manual
+2026-03-02,Food & Dining,18.90,Dinner,Cash,manual
+2026-03-04,Transportation,6.40,Bus ride,Digital Wallet,manual
+2026-03-07,Shopping,28.50,Stationery,Debit Card,manual
+2026-03-10,Bills & Utilities,58.00,Mobile plan,Bank Transfer,manual
+2026-03-12,Entertainment,20.00,Streaming subscription,Credit Card,manual
+2026-03-14,Healthcare,12.00,Medicine,Cash,manual
+2026-03-16,Education,25.00,Workshop,Debit Card,manual
+2026-03-18,Travel,150.00,Flight booking,Credit Card,manual
+2026-03-20,Other,8.00,Tea,Cash,manual
