@@ -5,12 +5,14 @@ Configuration settings for Keep Track
 import os
 
 # Database Configuration
-DATABASE_PATH = 'expenses.db'
+PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+RUNTIME_DIR = '/tmp/keep-track' if os.environ.get('VERCEL') else PROJECT_DIR
+os.makedirs(RUNTIME_DIR, exist_ok=True)
+DATABASE_PATH = os.path.join(RUNTIME_DIR, 'expenses.db')
 
 # Receipt Storage
-RECEIPTS_DIR = 'receipts'
-if not os.path.exists(RECEIPTS_DIR):
-    os.makedirs(RECEIPTS_DIR)
+RECEIPTS_DIR = os.path.join(RUNTIME_DIR, 'receipts')
+os.makedirs(RECEIPTS_DIR, exist_ok=True)
 
 # Tesseract OCR Path
 TESSERACT_PATH = {
