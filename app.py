@@ -176,6 +176,8 @@ def meta():
 @app.route("/api/expenses", methods=["GET"])
 def list_expenses():
     df = _to_df()
+    if df.empty:
+        return jsonify([])
 
     start = _parse_date(request.args.get("start"))
     end = _parse_date(request.args.get("end"))

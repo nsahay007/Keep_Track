@@ -1,6 +1,6 @@
-# ExpenseTracker Revamp (Web)
+# Keep Track (Web)
 
-A modern web-based expense tracker with smart analytics, voice assistant, OCR receipt scanning, and predictions.
+A modern web-based personal finance tracker with smart analytics, voice assistant, OCR receipt scanning, and predictions.
 
 ## Features
 - Dashboard with charts and insights

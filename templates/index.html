@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Keep Track</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body data-theme="light">
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo">ET</div>
+        <div>
+          <div class="title">Keep Track</div>
+          <div class="subtitle">Smart spending intelligence</div>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <button class="nav-item active" data-target="dashboard">📊 Dashboard</button>
+        <button class="nav-item" data-target="add">➕ Add Expense</button>
+        <button class="nav-item" data-target="scan">📷 Scan Receipt</button>
+        <button class="nav-item" data-target="voice-entry">🎤 Voice Entry</button>
+        <button class="nav-item" data-target="assistant">🤖 Voice Assistant</button>
+        <button class="nav-item" data-target="predictions">🔮 Predictions</button>
+        <button class="nav-item" data-target="reports">📄 Reports</button>
+        <button class="nav-item" data-target="settings">⚙️ Settings</button>
+      </nav>
+
+      <div class="mode-toggle">
+        <span>Theme</span>
+        <label class="switch">
+          <input id="themeToggle" type="checkbox" />
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="sidebar-note">
+        Built for clarity and control
+      </div>
+    </aside>
+
+    <main class="content">
+      <header class="header">
+        <div>
+          <h1 id="pageTitle">Dashboard</h1>
+          <p class="muted">Track, analyze, and predict your spending</p>
+        </div>
+        <div class="header-actions">
+          <button id="seedBtn" class="btn">Load Sample Data</button>
+          <button id="refreshBtn" class="btn ghost">Refresh</button>
+        </div>
+      </header>
+
+      <section class="view active" id="view-dashboard">
+        <section class="cards">
+          <div class="card">
+            <div class="card-label">Total Spending</div>
+            <div id="totalAll" class="card-value">$0.00</div>
+            <div class="card-meta">All time</div>
+          </div>
+          <div class="card">
+            <div class="card-label">Selected Range</div>
+            <div id="totalMonth" class="card-value">$0.00</div>
+            <div id="monthLabel" class="card-meta">Range</div>
+          </div>
+          <div class="card">
+            <div class="card-label">Top Category</div>
+            <div id="topCategory" class="card-value">-</div>
+            <div class="card-meta">Selected range</div>
+          </div>
+          <div class="card">
+            <div class="card-label">Smart Highlight</div>
+            <div id="quickInsight" class="card-value small">Add data to see insights</div>
+          </div>
+        </section>
+
+        <section class="filter-bar">
+          <label>Range
+            <select id="rangeSelect">
+              <option value="last_6m">Last 6 months</option>
+              <option value="last_3m">Last 3 months</option>
+              <option value="last_12m">Last 12 months</option>
+              <option value="this_month">This month</option>
+              <option value="last_month">Last month</option>
+              <option value="ytd">Year to date</option>
+              <option value="all">All time</option>
+              <option value="custom">Custom range</option>
+            </select>
+          </label>
+          <label class="date-field hidden">Start
+            <input id="rangeStart" type="date" />
+          </label>
+          <label class="date-field hidden">End
+            <input id="rangeEnd" type="date" />
+          </label>
+          <label>Category
+            <select id="filterCategory"></select>
+          </label>
+          <label>Sort
+            <select id="filterSort">
+              <option value="date">Date</option>
+              <option value="amount">Amount</option>
+              <option value="category">Category</option>
+            </select>
+          </label>
+          <label>Order
+            <select id="filterOrder">
+              <option value="desc">Desc</option>
+              <option value="asc">Asc</option>
+            </select>
+          </label>
+          <label>Limit
+            <input id="filterLimit" type="number" min="5" max="100" value="10" />
+          </label>
+          <button id="applyFilters" class="btn ghost">Apply</button>
+        </section>
+
+        <section class="grid">
+          <div class="panel">
+            <div class="panel-header">
+              <h2>Category Breakdown</h2>
+              <span class="muted">Pie chart</span>
+            </div>
+            <canvas id="pieChart"></canvas>
+          </div>
+          <div class="panel">
+            <div class="panel-header">
+              <h2>Monthly Expenses</h2>
+              <span class="muted">Last 6 months</span>
+            </div>
+            <canvas id="barChart"></canvas>
+          </div>
+          <div class="panel">
+            <div class="panel-header">
+              <h2>Spending Trend</h2>
+              <span class="muted">Last 30 days</span>
+            </div>
+            <canvas id="lineChart"></canvas>
+          </div>
+          <div class="panel">
+            <div class="panel-header">
+              <h2>Category Comparison</h2>
+              <span class="muted">This vs last month</span>
+            </div>
+            <canvas id="compareChart"></canvas>
+          </div>
+        </section>
+
+        <section class="grid">
+          <div class="panel wide">
+            <div class="panel-header">
+              <h2>Recent Transactions</h2>
+              <span class="muted">Filtered results</span>
+            </div>
+            <div class="table" id="recentTable"></div>
+          </div>
+          <div class="panel">
+            <div class="panel-header">
+              <h2>Smart Insights</h2>
+            </div>
+            <ul id="insights" class="insights"></ul>
+          </div>
+        </section>
+      </section>
+
+      <section class="view" id="view-add">
+        <section class="panel">
+          <div class="panel-header">
+            <h2>Add Expense</h2>
+            <span class="muted">Manual entry</span>
+          </div>
+          <form id="expenseForm" class="form">
+            <div class="form-row">
+              <label>Date
+                <input type="date" name="date" required />
+              </label>
+              <label>Category
+                <select name="category" id="categorySelect" required></select>
+              </label>
+            </div>
+            <div class="form-row">
+              <label>Amount
+                <input type="number" name="amount" step="0.01" required />
+              </label>
+              <label>Payment Method
+                <select name="payment_method" id="paymentSelect" required></select>
+              </label>
+            </div>
+            <label>Description
+              <input type="text" name="description" placeholder="e.g., Lunch at cafe" />
+            </label>
+            <button class="btn" type="submit">Add Expense</button>
+          </form>
+        </section>
+      </section>
+
+      <section class="view" id="view-scan">
+        <section class="panel">
+          <div class="panel-header">
+            <h2>Scan Receipt</h2>
+            <span class="muted">OCR extraction</span>
+          </div>
+          <div class="upload-box">
+            <input id="receiptFile" type="file" accept="image/*" />
+            <button id="scanBtn" class="btn">Scan Receipt</button>
+          </div>
+          <div id="scanResult" class="scan-result"></div>
+        </section>
+      </section>
+
+      <section class="view" id="view-voice-entry">
+        <section class="panel">
+          <div class="panel-header">
+            <h2>Voice Entry</h2>
+            <span class="muted">Speak to add an expense</span>
+          </div>
+          <div class="voice-entry">
+            <button id="voiceEntryBtn" class="btn">Start Voice Entry</button>
+            <div id="voiceEntryLog" class="voice-log">Say something like: "Spent 12 dollars on food via cash"</div>
+          </div>
+        </section>
+      </section>
+
+      <section class="view" id="view-assistant">
+        <section class="panel">
+          <div class="panel-header">
+            <h2>AI Voice Assistant</h2>
+            <span class="muted">Ask about your spending</span>
+          </div>
+          <div class="voice-assistant">
+            <div class="voice-actions">
+              <button id="assistantMic" class="btn">Start Listening</button>
+              <button id="assistantStop" class="btn ghost">Stop</button>
+            </div>
+            <label class="voice-label">Voice
+              <select id="assistantVoice" class="voice-input"></select>
+            </label>
+            <input id="assistantText" class="voice-input" placeholder="Type your question..." />
+            <button id="assistantAsk" class="btn">Ask</button>
+            <div id="assistantLog" class="voice-log">Try: "How much did I spend on food in January 2026?"</div>
+          </div>
+        </section>
+      </section>
+
+      <section class="view" id="view-predictions">
+        <section class="panel">
+          <div class="panel-header">
+            <h2>Predictions</h2>
+            <span class="muted">Forecast next days</span>
+          </div>
+          <div class="form-row">
+            <label>Days ahead
+              <input id="predictDays" type="number" min="7" max="90" value="30" />
+            </label>
+            <button id="predictBtn" class="btn">Generate Prediction</button>
+          </div>
+          <div id="predictSummary" class="predict-summary"></div>
+          <canvas id="predictChart"></canvas>
+        </section>
+      </section>
+
+      <section class="view" id="view-reports">
+        <section class="panel">
+          <div class="panel-header">
+            <h2>Reports</h2>
+            <span class="muted">Insightful summary</span>
+          </div>
+          <div class="report-grid">
+            <div class="report-card" id="reportSummary"></div>
+            <div class="report-card">
+              <h3>Category Snapshot</h3>
+              <canvas id="reportPie"></canvas>
+            </div>
+            <div class="report-card">
+              <h3>Monthly Flow</h3>
+              <canvas id="reportBar"></canvas>
+            </div>
+          </div>
+          <div class="report-text">
+            <button id="downloadReport" class="btn ghost">Download Report</button>
+            <pre id="reportContent"></pre>
+          </div>
+        </section>
+      </section>
+
+      <section class="view" id="view-settings">
+        <section class="panel">
+          <div class="panel-header">
+            <h2>Settings</h2>
+            <span class="muted">Budgets and data</span>
+          </div>
+          <div id="budgetList" class="budget-list"></div>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

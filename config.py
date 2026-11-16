@@ -1,5 +1,5 @@
 """
-Configuration settings for Smart Expense Tracker
+Configuration settings for Keep Track
 """
 
 import os
