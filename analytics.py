@@ -7,7 +7,6 @@ from __future__ import annotations
 import pandas as pd
 import numpy as np
 from datetime import datetime, timedelta
-from sklearn.linear_model import LinearRegression
 
 
 def _prepare_daily_series(df: pd.DataFrame) -> pd.DataFrame:
@@ -26,6 +25,11 @@ def predict_future_expenses(df: pd.DataFrame, days_ahead: int = 30):
     """Predict future expenses using trend + weekday seasonality."""
     if df.empty or len(df) < 14:
         return None, "Need at least 14 days of data for predictions"
+
+    try:
+        from sklearn.linear_model import LinearRegression
+    except ImportError:
+        return None, "Predictions are unavailable in this deployment"
 
     daily = _prepare_daily_series(df)
     if len(daily) < 14:

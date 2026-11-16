@@ -2,32 +2,24 @@
 OCR Receipt Scanner
 """
 
-import pytesseract
-import cv2
-import numpy as np
-from PIL import Image
 import re
 from datetime import datetime
 import os
 import platform
 from config import TESSERACT_PATH, RECEIPTS_DIR, CATEGORY_KEYWORDS
-import pytesseract
-from PIL import Image
 
-# Add this line - adjust path if your installation is different
-pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 class ReceiptScanner:
     """Scans and extracts data from receipt images"""
     
     def __init__(self):
         """Initialize OCR engine"""
-        # Set tesseract path based on OS
-        system = platform.system()
-        if system in TESSERACT_PATH and os.path.exists(TESSERACT_PATH[system]):
-            pytesseract.pytesseract.tesseract_cmd = TESSERACT_PATH[system]
+        pass
     
     def preprocess_image(self, image):
         """Preprocess image for better OCR"""
+        import cv2
+        import numpy as np
+
         # Convert PIL to OpenCV format
         img = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
         
@@ -45,6 +37,12 @@ class ReceiptScanner:
     def extract_text(self, image):
         """Extract text from image using OCR"""
         try:
+            import pytesseract
+
+            system = platform.system()
+            if system in TESSERACT_PATH and os.path.exists(TESSERACT_PATH[system]):
+                pytesseract.pytesseract.tesseract_cmd = TESSERACT_PATH[system]
+
             # Preprocess
             processed = self.preprocess_image(image)
             
